@@ -2,7 +2,7 @@ import { FC } from "react";
 import CardDetail from "./Card";
 import useBoard from "../hooks/useBoard";
 const Board: FC = () => {
-    const { lists, createList, createCard, editCard, deleteCard } = useBoard();
+  const { lists, createList, createCard, editCard, deleteCard } = useBoard();
 
   const handleAddList = () => {
     const listName = window.prompt("Enter list title"); // TODO: Replace with modal or dialog

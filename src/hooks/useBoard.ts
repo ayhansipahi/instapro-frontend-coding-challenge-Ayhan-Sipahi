@@ -10,45 +10,10 @@ type UseBoard = {
 };
 
 const useBoard = (): UseBoard => {
-  const [lists, setLists] = useState<List[]>([
-    {
-      id: "1",
-      title: "List 1",
-      cards: [
-        {
-          id: "1",
-          content: "Card 1",
-        },
-        {
-          id: "2",
-          content: "Card 2",
-        },
-        {
-          id: "3",
-          content: "Card 3",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "List 2",
-      cards: [
-        {
-          id: "4",
-          content: "Card 4",
-        },
-        {
-          id: "5",
-          content: "Card 5",
-        },
-        {
-          id: "6",
-          content: "Card 6",
-        },
-      ],
-    },
-  ]);
+  const [lists, setLists] = useState<List[]>([]);
 
+
+  
   const createList = (title: string) => {
     const list = {
       id: `list-${Date.now()}`,
