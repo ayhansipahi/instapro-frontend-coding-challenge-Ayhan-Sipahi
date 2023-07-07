@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { List } from "../types";
 
 type UseBoard = {
@@ -11,9 +11,24 @@ type UseBoard = {
 
 const useBoard = (): UseBoard => {
   const [lists, setLists] = useState<List[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
+  useEffect(() => {
+    if (!loaded) return;
+    window.localStorage.setItem('lists', JSON.stringify(lists));
+  }, [lists,loaded]);
 
-  
+  useEffect(() => {
+    const storedLists = window.localStorage.getItem('lists');
+    if (storedLists) {
+      const storedListsJson = JSON.parse(storedLists) as List[];
+      setLists(storedListsJson);
+    } else {
+      setLists([]);
+    }
+    setLoaded(true);
+  }, []);
+
   const createList = (title: string) => {
     const list = {
       id: `list-${Date.now()}`,
