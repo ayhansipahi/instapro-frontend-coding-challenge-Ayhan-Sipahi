@@ -1,16 +1,6 @@
 import { FC, useState } from "react";
-import Card from "./Card";
-type Card = {
-  id: string;
-  content: string;
-};
-
-type List = {
-  id: string;
-  title: string;
-  cards: Card[];
-};
-
+import CardDetail from "./Card";
+import { List } from "../types";
 const Board: FC = () => {
   const [lists, setLists] = useState<List[]>([
     {
@@ -85,6 +75,12 @@ const Board: FC = () => {
     const cardName = window.prompt("Enter card content"); // TODO: Replace with modal or dialog
     createCard(listId, cardName || "New Card");
   };
+  const handleEditCard = (listId: string, cardId: string, content: string) => {
+    // TODO: Implement
+  };
+  const handleDeleteCard = (listId: string, cardId: string) => {
+    // TODO: Implement
+  };
 
   return (
     <div>
@@ -94,7 +90,13 @@ const Board: FC = () => {
           <ul>
             {list.cards.map((card) => (
               <li key={card.id}>
-                <Card id={card.id} content={card.content} />
+                <CardDetail
+                  card={card}
+                  onEdit={(content) =>
+                    handleEditCard(list.id, card.id, content)
+                  }
+                  onDelete={() => handleDeleteCard(list.id, card.id)}
+                />
               </li>
             ))}
           </ul>
