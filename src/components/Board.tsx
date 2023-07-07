@@ -1,71 +1,8 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import CardDetail from "./Card";
-import { List } from "../types";
+import useBoard from "../hooks/useBoard";
 const Board: FC = () => {
-  const [lists, setLists] = useState<List[]>([
-    {
-      id: "1",
-      title: "List 1",
-      cards: [
-        {
-          id: "1",
-          content: "Card 1",
-        },
-        {
-          id: "2",
-          content: "Card 2",
-        },
-        {
-          id: "3",
-          content: "Card 3",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "List 2",
-      cards: [
-        {
-          id: "4",
-          content: "Card 4",
-        },
-        {
-          id: "5",
-          content: "Card 5",
-        },
-        {
-          id: "6",
-          content: "Card 6",
-        },
-      ],
-    },
-  ]);
-
-  const createList = (title: string) => {
-    const list = {
-      id: `list-${Date.now()}`,
-      title,
-      cards: [],
-    };
-    setLists([...lists, list]);
-  };
-
-  const createCard = (listId: string, content: string) => {
-    const card = {
-      id: `card-${Date.now()}`,
-      content,
-    };
-    const updatedLists = lists.map((list) => {
-      if (list.id === listId) {
-        return {
-          ...list,
-          cards: [...list.cards, card],
-        };
-      }
-      return list;
-    });
-    setLists(updatedLists);
-  };
+    const { lists, createList, createCard, editCard, deleteCard } = useBoard();
 
   const handleAddList = () => {
     const listName = window.prompt("Enter list title"); // TODO: Replace with modal or dialog
@@ -76,10 +13,10 @@ const Board: FC = () => {
     createCard(listId, cardName || "New Card");
   };
   const handleEditCard = (listId: string, cardId: string, content: string) => {
-    // TODO: Implement
+    editCard(listId, cardId, content);
   };
   const handleDeleteCard = (listId: string, cardId: string) => {
-    // TODO: Implement
+    deleteCard(listId, cardId);
   };
 
   return (
