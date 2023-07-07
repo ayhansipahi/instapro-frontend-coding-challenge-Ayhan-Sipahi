@@ -32,7 +32,7 @@ const CardDetail: FC<Props> = ({ card, onEdit, onDelete }) => {
         </div>
       ) : (
         <div>
-          <p>{card.content}</p>
+          <p style={{whiteSpace: "pre-wrap"}}>{card.content}</p> 
           <button onClick={() => setEditing(true)}>Edit</button>
           <button onClick={handleDelete}>Delete</button>
         </div>
