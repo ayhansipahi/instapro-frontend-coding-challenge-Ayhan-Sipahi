@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import Card from "./Card";
 type Card = {
   id: string;
   content: string;
@@ -49,6 +50,7 @@ const Board: FC = () => {
       ],
     },
   ]);
+
   const createList = (title: string) => {
     const list = {
       id: `list-${Date.now()}`,
@@ -57,6 +59,7 @@ const Board: FC = () => {
     };
     setLists([...lists, list]);
   };
+
   const createCard = (listId: string, content: string) => {
     const card = {
       id: `card-${Date.now()}`,
@@ -80,7 +83,7 @@ const Board: FC = () => {
   };
   const handleAddCard = (listId: string) => {
     const cardName = window.prompt("Enter card content"); // TODO: Replace with modal or dialog
-    createCard(listId, cardName || "New Card")
+    createCard(listId, cardName || "New Card");
   };
 
   return (
@@ -90,7 +93,9 @@ const Board: FC = () => {
           <h2>{list.title}</h2>
           <ul>
             {list.cards.map((card) => (
-              <li key={card.id}>{card.content}</li>
+              <li key={card.id}>
+                <Card id={card.id} content={card.content} />
+              </li>
             ))}
           </ul>
           <button onClick={() => handleAddCard(list.id)}>Add Card</button>
