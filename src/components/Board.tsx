@@ -1,6 +1,15 @@
 import { FC } from "react";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+  DroppableProvided,
+} from "react-beautiful-dnd";
+
 import CardDetail from "./Card";
 import useBoard from "../hooks/useBoard";
+
 const Board: FC = () => {
   const { lists, createList, createCard, editCard, deleteCard } = useBoard();
 
@@ -19,29 +28,52 @@ const Board: FC = () => {
     deleteCard(listId, cardId);
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    console.log(result);
+  };
+
   return (
-    <div>
-      {lists.map((list) => (
-        <div key={list.id}>
-          <h2>{list.title}</h2>
-          <ul>
-            {list.cards.map((card) => (
-              <li key={card.id}>
-                <CardDetail
-                  card={card}
-                  onEdit={(content) =>
-                    handleEditCard(list.id, card.id, content)
-                  }
-                  onDelete={() => handleDeleteCard(list.id, card.id)}
-                />
-              </li>
-            ))}
-          </ul>
-          <button onClick={() => handleAddCard(list.id)}>Add Card</button>
-        </div>
-      ))}
-      <button onClick={handleAddList}>Add List</button>
-    </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div>
+        {lists.map((list) => (
+          <div key={list.id}>
+            <h2>{list.title}</h2>
+            <Droppable droppableId={list.id}>
+              {(provided: DroppableProvided) => (
+                <ul {...provided.droppableProps} ref={provided.innerRef}>
+                  {list.cards.map((card, index) => (
+                    <Draggable
+                      key={card.id}
+                      draggableId={card.id}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <li
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <CardDetail
+                            card={card}
+                            onEdit={(content) =>
+                              handleEditCard(list.id, card.id, content)
+                            }
+                            onDelete={() => handleDeleteCard(list.id, card.id)}
+                          />
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+            <button onClick={() => handleAddCard(list.id)}>Add Card</button>
+          </div>
+        ))}
+        <button onClick={handleAddList}>Add List</button>
+      </div>
+    </DragDropContext>
   );
 };
 
