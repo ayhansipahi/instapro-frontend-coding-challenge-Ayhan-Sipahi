@@ -1,5 +1,7 @@
 import { FC, useState } from "react";
-import type { Card } from "../types";
+
+import type { Card } from "../../types";
+import style from "./Card.module.css";
 
 type Props = {
   card: Card;
@@ -19,8 +21,14 @@ const CardDetail: FC<Props> = ({ card, onEdit, onDelete }) => {
   const handleDelete = () => {
     onDelete();
   };
+
+  const handleCancelEdit = () => {
+    setContent(card.content);
+    setEditing(false);
+  };
+  
   return (
-    <div>
+    <div className={style.card}>
       {editing ? (
         <div>
           <textarea
@@ -28,13 +36,18 @@ const CardDetail: FC<Props> = ({ card, onEdit, onDelete }) => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
-          <button onClick={handleEdit}>Save</button>
+          <div className={style.actions}>
+            <button onClick={handleEdit}>💾</button>
+            <button onClick={handleCancelEdit}>❌</button>
+          </div>
         </div>
       ) : (
         <div>
-          <p style={{whiteSpace: "pre-wrap"}}>{card.content}</p> 
-          <button onClick={() => setEditing(true)}>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
+          <p className={style.cardContent}>{card.content}</p>
+          <div className={style.actions}>
+            <button onClick={() => setEditing(true)}>✍️</button>
+            <button onClick={handleDelete}>🗑️</button>
+          </div>
         </div>
       )}
     </div>

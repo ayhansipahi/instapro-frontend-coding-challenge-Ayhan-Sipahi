@@ -1,0 +1,12 @@
+.card {
+  max-width: 300px;
+}
+
+.card-content {
+  white-space: pre-wrap;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
