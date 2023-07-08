@@ -7,6 +7,7 @@ type UseBoard = {
   createCard: (listId: string, content: string) => void;
   editCard: (listId: string, cardId: string, content: string) => void;
   deleteCard: (listId: string, cardId: string) => void;
+  moveCard: (sourceListId: string, destinationListId: string, sourceIndex: number, destinationIndex: number) => void;
 };
 
 const useBoard = (): UseBoard => {
@@ -90,7 +91,15 @@ const useBoard = (): UseBoard => {
     setLists(updatedLists);
   };
 
-  return { lists, createList, createCard, editCard, deleteCard };
+  const moveCard = (sourceListId: string, destinationListId: string, sourceIndex: number, destinationIndex: number) => {
+    const sourceList = lists.find((list) => list.id === sourceListId);
+    const destinationList = lists.find((list) => list.id === destinationListId);
+    const [removedCard] = sourceList!.cards.splice(sourceIndex, 1);
+    destinationList!.cards.splice(destinationIndex, 0, removedCard);
+    setLists([...lists]);
+  };
+
+  return { lists, createList, createCard, editCard, deleteCard, moveCard };
 };
 
 

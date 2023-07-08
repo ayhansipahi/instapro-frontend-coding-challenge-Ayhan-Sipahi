@@ -11,7 +11,8 @@ import CardDetail from "./Card";
 import useBoard from "../hooks/useBoard";
 
 const Board: FC = () => {
-  const { lists, createList, createCard, editCard, deleteCard } = useBoard();
+  const { lists, createList, createCard, editCard, deleteCard, moveCard } =
+    useBoard();
 
   const handleAddList = () => {
     const listName = window.prompt("Enter list title"); // TODO: Replace with modal or dialog
@@ -29,7 +30,14 @@ const Board: FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-    console.log(result);
+    const { source, destination } = result;
+    if (!destination) return;
+    moveCard(
+      source.droppableId,
+      destination.droppableId,
+      source.index,
+      destination.index
+    );
   };
 
   return (
