@@ -37,9 +37,6 @@
     flex-direction: column;
     flex-grow: 1;
 }
-.list-title{
-    margin-top: 0;
-}
 .list-cards {
     list-style: none;
     padding: 0;

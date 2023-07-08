@@ -7,7 +7,14 @@ type UseBoard = {
   createCard: (listId: string, content: string) => void;
   editCard: (listId: string, cardId: string, content: string) => void;
   deleteCard: (listId: string, cardId: string) => void;
-  moveCard: (sourceListId: string, destinationListId: string, sourceIndex: number, destinationIndex: number) => void;
+  moveCard: (
+    sourceListId: string,
+    destinationListId: string,
+    sourceIndex: number,
+    destinationIndex: number
+  ) => void;
+  editListTitle: (listId: string, title: string) => void;
+  deleteList: (listId: string) => void;
 };
 
 const useBoard = (): UseBoard => {
@@ -16,11 +23,11 @@ const useBoard = (): UseBoard => {
 
   useEffect(() => {
     if (!loaded) return;
-    window.localStorage.setItem('lists', JSON.stringify(lists));
-  }, [lists,loaded]);
+    window.localStorage.setItem("lists", JSON.stringify(lists));
+  }, [lists, loaded]);
 
   useEffect(() => {
-    const storedLists = window.localStorage.getItem('lists');
+    const storedLists = window.localStorage.getItem("lists");
     if (storedLists) {
       const storedListsJson = JSON.parse(storedLists) as List[];
       setLists(storedListsJson);
@@ -56,7 +63,6 @@ const useBoard = (): UseBoard => {
     setLists(updatedLists);
   };
 
-
   const editCard = (listId: string, cardId: string, content: string) => {
     const updatedLists = lists.map((list) => {
       if (list.id === listId) {
@@ -91,7 +97,12 @@ const useBoard = (): UseBoard => {
     setLists(updatedLists);
   };
 
-  const moveCard = (sourceListId: string, destinationListId: string, sourceIndex: number, destinationIndex: number) => {
+  const moveCard = (
+    sourceListId: string,
+    destinationListId: string,
+    sourceIndex: number,
+    destinationIndex: number
+  ) => {
     const sourceList = lists.find((list) => list.id === sourceListId);
     const destinationList = lists.find((list) => list.id === destinationListId);
     const [removedCard] = sourceList!.cards.splice(sourceIndex, 1);
@@ -99,8 +110,34 @@ const useBoard = (): UseBoard => {
     setLists([...lists]);
   };
 
-  return { lists, createList, createCard, editCard, deleteCard, moveCard };
-};
+  const editListTitle = (listId: string, title: string) => {
+    const updatedLists = lists.map((list) => {
+      if (list.id === listId) {
+        return {
+          ...list,
+          title,
+        };
+      }
+      return list;
+    });
+    setLists(updatedLists);
+  };
 
+  const deleteList = (listId: string) => {
+    const updatedLists = lists.filter((list) => list.id !== listId);
+    setLists(updatedLists);
+  };
+
+  return {
+    lists,
+    createList,
+    createCard,
+    editCard,
+    deleteCard,
+    moveCard,
+    deleteList,
+    editListTitle,
+  };
+};
 
 export default useBoard;

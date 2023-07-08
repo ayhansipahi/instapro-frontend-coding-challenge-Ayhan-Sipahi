@@ -1,57 +1,56 @@
 import { FC, useState } from "react";
 
-import type { Card } from "../../types";
-import style from "./Card.module.css";
+import style from "./ListTitle.module.css";
 
 type Props = {
-  card: Card;
-  onEdit: (content: string) => void;
+  title: string;
+  onEdit: (title: string) => void;
   onDelete: () => void;
 };
 
-const CardDetail: FC<Props> = ({ card, onEdit, onDelete }) => {
+const ListTitle: FC<Props> = ({ title, onEdit, onDelete }) => {
   const [editing, setEditing] = useState(false);
-  const [content, setContent] = useState(card.content);
+  const [newTitle, setNewTitle] = useState(title);
 
   const handleEdit = () => {
-    onEdit(content);
+    onEdit(newTitle);
     setEditing(false);
   };
 
   const handleDelete = () => {
     onDelete();
   };
-
   const handleCancelEdit = () => {
-    setContent(card.content);
+    setNewTitle(title);
     setEditing(false);
   };
 
   return (
-    <div className={style.card}>
+    <div className={style.list}>
       {editing ? (
-        <div>
+        <>
           <input
-            title="Edit card"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            title="Edit list title"
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
           />
           <div className={style.actions}>
             <button onClick={handleEdit}>💾</button>
             <button onClick={handleCancelEdit}>❌</button>
           </div>
-        </div>
+        </>
       ) : (
-        <div>
-          <p className={style.cardContent}>{card.content}</p>
+        <>
+          <h2 className={style.title}>{title}</h2>
           <div className={style.actions}>
             <button onClick={() => setEditing(true)}>✍️</button>
             <button onClick={handleDelete}>🗑️</button>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
 };
 
-export default CardDetail;
+export default ListTitle;

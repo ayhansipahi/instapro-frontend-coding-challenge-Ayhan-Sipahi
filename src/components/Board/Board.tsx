@@ -10,9 +10,10 @@ import {
 import CardDetail from "../Card/Card";
 import useBoard from "../../hooks/useBoard";
 import style from "./Board.module.css";
+import ListTitle from "../ListTitle/ListTitle";
 
 const Board: FC = () => {
-  const { lists, createList, createCard, editCard, deleteCard, moveCard } =
+  const { lists, createList, createCard, editCard, deleteCard, moveCard, editListTitle, deleteList} =
     useBoard();
 
   const handleAddList = () => {
@@ -41,6 +42,14 @@ const Board: FC = () => {
     );
   };
 
+  const handleEditListTitle = (listId: string, title: string) => {
+    editListTitle(listId, title);
+  };
+
+  const handleDeleteList = (listId: string) => {
+    deleteList(listId);
+  };
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <header className={style.header}>
@@ -50,7 +59,11 @@ const Board: FC = () => {
       <div className={style.board}>
         {lists.map((list) => (
           <div key={list.id} className={style.list}>
-            <h2 className={style.listTitle}>{list.title}</h2>
+            <ListTitle
+              title={list.title}
+              onEdit={(title) => handleEditListTitle(list.id, title)}
+              onDelete={() => handleDeleteList(list.id)}
+            />
             <Droppable droppableId={list.id}>
               {(provided: DroppableProvided) => (
                 <ul className={style.listCards} {...provided.droppableProps} ref={provided.innerRef}>
